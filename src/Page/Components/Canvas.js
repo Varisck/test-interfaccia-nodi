@@ -42,11 +42,11 @@ class Canvas extends React.Component {
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-        this.draw(ctx, this.props.nodes);
+        this.draw(ctx, this.props.nodes, this.props.connections);
     };
 
     componentDidUpdate(){
-        this.draw(this.ctx, this.props.nodes);
+        this.draw(this.ctx, this.props.nodes, this.props.connections);
     }
 
     isClicked = (node, x, y) => {
@@ -57,7 +57,7 @@ class Canvas extends React.Component {
         }
     };   
 
-    draw = (ctx, nodes) => {
+    draw = (ctx, nodes, connections) => {
         ctx.clearRect(0, 0, this.cw, this.cy);
         
         ctx.fillStyle = "black";
@@ -70,6 +70,16 @@ class Canvas extends React.Component {
                 node.draw(ctx, 'green');
             }
         });
+
+        connections.forEach((conn) => {
+            ctx.beginPath();
+            ctx.strokeStyle = 'purple';
+            ctx.moveTo(conn[0].x, conn[0].y);
+            ctx.lineTo(conn[1].x, conn[1].y);
+            ctx.stroke();
+            console.log(conn);
+        })
+
     };
     
     render() {

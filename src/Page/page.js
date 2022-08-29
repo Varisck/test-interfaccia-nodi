@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Canvas from './Components/Canvas';
 import { Node, isInsideSelected } from './Components/Node';
+import NodeInfo from './Components/NodeInfo';
 
 const Page = () => {
 
@@ -13,7 +14,7 @@ const Page = () => {
     const [selectedNodes, setSelectedNodes] = useState([]);
 
     const addNode = (x, y) => {
-        setNodes([...nodes, new Node(x, y, "")]);
+        setNodes([...nodes, new Node(x, y, `${nodes.length}`)]);
     }
 
     const aggiungiNodo = () => {
@@ -26,34 +27,36 @@ const Page = () => {
 
     const aggiungiConnessione = () => {
         let newConnections = [];
-        //aggiunge connessioni doppie da cambiare
-        for(let i = 0; i < selectedNodes.length; i++){
-            for(let j = i + 1; j < selectedNodes.length; j++){
-                newConnections.push([selectedNodes[i], selectedNodes[j]]);
+        for (let i = 0; i < selectedNodes.length; i++) {
+            for (let j = i + 1; j < selectedNodes.length; j++) {
+                if (!connections.some((conn) =>
+                    ((conn[0] === selectedNodes[i] && conn[1] === selectedNodes[j]) || (
+                        (conn[1] === selectedNodes[i] && conn[0] === selectedNodes[j])
+                    )))) {
+                    newConnections.push([selectedNodes[i], selectedNodes[j]]);
+                }
             }
         }
-
         setConnections([...connections, ...newConnections])
-        
-
     }
 
     const eliminaNodi = () => {
 
     };
 
-    console.log(connections);
-
     return (
         <div className="App">
             <div className="App-header">
+                <NodeInfo 
+                    selected={selectedNodes}
+                />
                 <Canvas
                     nodes={nodes}
                     addNode={addNode}
                     modifiers={modifiers}
                     switchAggiungiNodo={aggiungiNodo}
                     addSelectedNode={(node) => {
-                        if(!isInsideSelected(node, selectedNodes)){
+                        if (!isInsideSelected(node, selectedNodes)) {
                             setSelectedNodes([...selectedNodes, node]);
                         }
                     }}
@@ -61,6 +64,7 @@ const Page = () => {
                     clearSelectedNodes={() => {
                         setSelectedNodes([]);
                     }}
+                    connections={connections}
                 />
                 <div className="button-list">
                     <button className="btn btn-dark" onClick={aggiungiNodo}>Aggiungi nodo</button>
