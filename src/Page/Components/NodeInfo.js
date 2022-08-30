@@ -11,6 +11,16 @@ const NodeInfo = (props) => {
         setValue(newValue);
     };
 
+    const printTest = () => {
+        let text = "";
+        if(props.selected[value] !== undefined){
+            Object.entries(props.selected[value]).forEach(([att, val]) => {
+                text += `${att} -> ${val} `;
+            })
+        } 
+        return text;
+    }
+
     return (
         <div>
             <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper' }}>
@@ -22,12 +32,16 @@ const NodeInfo = (props) => {
                     aria-label="scrollable auto tabs example"
                 >
                     {props.selected.map((sel, index) => {
-                        console.log(sel);
                         return(
                             <Tab label={`${sel.val}`} key={`${index}-tab`} />
                         )
                     })}
                 </Tabs>
+            </Box>
+            <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper' }}>
+                <p style={{backgroundColor: 'black', color: 'white'}}>
+                    {printTest()}
+                </p>
             </Box>
         </div>
     )

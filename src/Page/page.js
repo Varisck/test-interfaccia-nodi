@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import Canvas from './Components/Canvas';
 import { Node, isInsideSelected } from './Components/Node';
 import NodeInfo from './Components/NodeInfo';
 
 const Page = () => {
+
+    const ref = useRef(null);
+    const [divDimensions, setDivDimensions] = useState({width: 500, height: 500});
 
     const [nodes, setNodes] = useState([]);
     const [modifiers, setModifiers] = useState({
@@ -44,29 +47,45 @@ const Page = () => {
 
     };
 
+    const changeDimensions = () => {
+        setDivDimensions({height: ref.current.offsetHeight, width: ref.current.offsetWidth});
+    }
+
+    //simile a componentDidMount
+    useEffect(() => {
+       window.addEventListener("resize", changeDimensions);
+       changeDimensions();
+    }, [])
+
     return (
         <div className="App">
             <div className="App-header">
-                <NodeInfo 
-                    selected={selectedNodes}
-                />
-                <Canvas
-                    nodes={nodes}
-                    addNode={addNode}
-                    modifiers={modifiers}
-                    switchAggiungiNodo={aggiungiNodo}
-                    addSelectedNode={(node) => {
-                        if (!isInsideSelected(node, selectedNodes)) {
-                            setSelectedNodes([...selectedNodes, node]);
-                        }
-                    }}
-                    selectedNodes={selectedNodes}
-                    clearSelectedNodes={() => {
-                        setSelectedNodes([]);
-                    }}
-                    connections={connections}
-                />
-                <div className="button-list">
+                <div style={{width: '30vw', height: '70vh'}}>
+                    <NodeInfo 
+                        selected={selectedNodes}
+                    />
+                </div>
+                <div className="Canvas-div" ref={ref}>
+                    <Canvas
+                        nodes={nodes}
+                        addNode={addNode}
+                        modifiers={modifiers}
+                        switchAggiungiNodo={aggiungiNodo}
+                        addSelectedNode={(node) => {
+                            if (!isInsideSelected(node, selectedNodes)) {
+                                setSelectedNodes([...selectedNodes, node]);
+                            }
+                        }}
+                        selectedNodes={selectedNodes}
+                        clearSelectedNodes={() => {
+                            setSelectedNodes([]);
+                        }}
+                        connections={connections}
+                        width={divDimensions.width}
+                        height={divDimensions.height}
+                    />
+                </div> 
+                <div className="button-list" style={{width: '10vw'}}>
                     <button className="btn btn-dark" onClick={aggiungiNodo}>Aggiungi nodo</button>
                     <button className="btn btn-dark" onClick={aggiungiNodoConnesso}>Aggiungi nodo connesso</button>
                     <button className="btn btn-dark" onClick={aggiungiConnessione}>Aggiungi connessione</button>

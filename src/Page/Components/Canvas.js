@@ -6,8 +6,6 @@ class Canvas extends React.Component {
         this.state = {};
     }
     
-    cw = 500;
-    cy = 500;
     ctx;
 
     hadleClick = (e) => {
@@ -36,8 +34,10 @@ class Canvas extends React.Component {
 
         canvas.addEventListener('click', this.hadleClick)
 
-        canvas.width = this.cw;
-        canvas.height = this.cy;
+        canvas.width = this.props.width;
+        canvas.height = this.props.height;
+        // this.cw = canvas.width;
+        // this.cy = canvas.height;
 
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -58,10 +58,10 @@ class Canvas extends React.Component {
     };   
 
     draw = (ctx, nodes, connections) => {
-        ctx.clearRect(0, 0, this.cw, this.cy);
+        ctx.clearRect(0, 0, this.props.width, this.props.height);
         
         ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, this.cw, this.cy);
+        ctx.fillRect(0, 0, this.props.width, this.props.height);
     
         nodes.forEach((node) => {
             if(!isInsideSelected(node, this.props.selectedNodes)){
@@ -77,14 +77,13 @@ class Canvas extends React.Component {
             ctx.moveTo(conn[0].x, conn[0].y);
             ctx.lineTo(conn[1].x, conn[1].y);
             ctx.stroke();
-            console.log(conn);
         })
 
     };
     
     render() {
         return(
-            <canvas id='c'/>
+            <canvas id='c' width={this.props.width} height={this.props.height}/>
         );
     }
 
