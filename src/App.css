@@ -1,5 +1,5 @@
 .App-header {
-  background-color: #282c34;
+  background-color: #121212;
   min-height: 100vh;
   display: flex;
   flex-direction: row;
@@ -24,4 +24,15 @@
   height: 70vh;
   justify-content: center;
   align-items: center;
+}
+
+.textFieldDiv{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.textFieldDiv div{
+  width: 95%;
 }

@@ -51,6 +51,12 @@ const Page = () => {
         setDivDimensions({height: ref.current.offsetHeight, width: ref.current.offsetWidth});
     }
 
+    const changeNodeData = (name, position) => (event) => {
+        const newSelected = [...selectedNodes];
+        newSelected[position][name] = event.target.value;
+        setSelectedNodes([...newSelected]);
+    }
+
     //simile a componentDidMount
     useEffect(() => {
        window.addEventListener("resize", changeDimensions);
@@ -59,10 +65,11 @@ const Page = () => {
 
     return (
         <div className="App">
-            <div className="App-header">
+            <div className="App-header" style={{bgcolor: 'background.default'}}>
                 <div style={{width: '30vw', height: '70vh'}}>
                     <NodeInfo 
                         selected={selectedNodes}
+                        changeNodeData={changeNodeData}
                     />
                 </div>
                 <div className="Canvas-div" ref={ref}>

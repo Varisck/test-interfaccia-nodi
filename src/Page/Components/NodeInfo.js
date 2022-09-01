@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import NodeInfoInput from './NodeInfoInput';
 
 const NodeInfo = (props) => {
 
@@ -10,55 +11,56 @@ const NodeInfo = (props) => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
-    const printTest = () => {
-        let text = "";
-        if(props.selected[value] !== undefined){
-            Object.entries(props.selected[value]).forEach(([att, val]) => {
-                text += `${att} -> ${val} `;
-            })
-        } 
-        return text;
-    }
-
+    
     return (
-        <div>
-            <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper' }}>
+        <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+            <Box sx={{ height: '12%', bgcolor: 'background.paper' }}>
                 <Tabs
                     value={value}
                     onChange={handleChange}
                     variant="scrollable"
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs example"
-                >
+                    >
                     {props.selected.map((sel, index) => {
                         return(
-                            <Tab label={`${sel.val}`} key={`${index}-tab`} />
+                            <Tab label={`${sel.val}`} key={`${index}-tab`} color="secondary"/>
                         )
                     })}
                 </Tabs>
             </Box>
-            <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper' }}>
-                <p style={{backgroundColor: 'black', color: 'white'}}>
-                    {printTest()}
-                </p>
+            <Box sx={{ height: '100%', bgcolor: 'background.paper' }}>
+                <NodeInfoInput selected={props.selected[value]}
+                    changeNodeData={props.changeNodeData}
+                    position={value} />
             </Box>
         </div>
     )
-
+    
 }
 
 export default NodeInfo;
 
 /*
 
+
+const printTest = () => {
+    let text = "";
+    if(props.selected[value] !== undefined){
+        Object.entries(props.selected[value]).forEach(([att, val]) => {
+            text += `${att} -> ${val} `;
+        })
+    } 
+    return text;
+}
+
 const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
+const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
+};
 
-  return (
+return (
     <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper' }}>
       <Tabs
         value={value}
