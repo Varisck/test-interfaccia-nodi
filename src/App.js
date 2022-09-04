@@ -6,8 +6,11 @@ import { ThemeProvider, createTheme, experimental_sx as sx,} from '@mui/material
 const theme = createTheme({
   palette: {
     background: {
-      default: '#121212',
-      paper: '#1d1d1d'
+      // default: '#121212',
+      // paper: '#1d1d1d',
+      default: '#424250',
+      tab: '#373740',
+      paper: '#33333d'
     },
     primary: {
       main: '#ffffff',

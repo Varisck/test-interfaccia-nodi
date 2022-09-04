@@ -8,10 +8,34 @@ const NodeInfo = (props) => {
 
     const [value, setValue] = React.useState(0);
 
+    const [connWithSel, SetConWithSel] = useState([]);
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const getConnections = () => {
+        const connSel = [];
+        props.connections.forEach((conn) => {
+            if(conn[0] === props.selected[value]){
+                connSel.push(conn[1]);
+            }else if(conn[1] === props.selected[value]){
+                connSel.push(conn[0]);
+            }
+        });
+        SetConWithSel(connSel);
+    }
     
+    useEffect(() => {
+        getConnections();
+    }, [value, props.connections]);
+
+    useEffect(() => {
+        if(props.selected.length === 1){
+            getConnections();
+        }
+    }, [props.selected.length])
+
     return (
         <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
             <Box sx={{ height: '12%', bgcolor: 'background.paper' }}>
@@ -29,10 +53,12 @@ const NodeInfo = (props) => {
                     })}
                 </Tabs>
             </Box>
-            <Box sx={{ height: '100%', bgcolor: 'background.paper' }}>
+            <Box sx={{ height: '100%', bgcolor: 'background.paper', overflowY: 'auto' }}>
                 <NodeInfoInput selected={props.selected[value]}
                     changeNodeData={props.changeNodeData}
-                    position={value} />
+                    position={value} 
+                    connections={connWithSel}
+                    />
             </Box>
         </div>
     )
@@ -40,65 +66,3 @@ const NodeInfo = (props) => {
 }
 
 export default NodeInfo;
-
-/*
-
-
-const printTest = () => {
-    let text = "";
-    if(props.selected[value] !== undefined){
-        Object.entries(props.selected[value]).forEach(([att, val]) => {
-            text += `${att} -> ${val} `;
-        })
-    } 
-    return text;
-}
-
-const [value, setValue] = React.useState(0);
-
-const handleChange = (event, newValue) => {
-    setValue(newValue);
-};
-
-return (
-    <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper' }}>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        variant="scrollable"
-        scrollButtons="auto"
-        aria-label="scrollable auto tabs example"
-      >
-        <Tab label="Item One" />
-        <Tab label="Item Two" />
-        <Tab label="Item Three" />
-        <Tab label="Item Four" />
-        <Tab label="Item Five" />
-        <Tab label="Item Six" />
-        <Tab label="Item Seven" />
-      </Tabs>
-    </Box>
-  );
-}
-
-<div classNameName="Node-info">
-            {props.selected.map((node, value) => {
-                return(
-                    <div key={`${node.val}-${value}`}>
-                        <button classNameName="btn btn-dark" 
-                            type="button" data-toggle="collapse" 
-                            data-target={`#${value}collapse`} aria-expanded="false" 
-                            aria-controls={`${value}collapse`}>
-                            {node.val}
-                            </button>
-                        <div classNameName="collapse multi-collapse" id={`${value}collapse`}>
-                            <div classNameName="card card-body">
-                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                            </div>
-                            </div>
-                    </div>
-                );
-            })}
-        </div>
-
-*/

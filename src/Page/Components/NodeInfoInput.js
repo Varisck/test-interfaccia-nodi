@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import ConnectionCard from './ConnectinoCard';
 
 const NodeInfoInput = (props) => {
 
@@ -24,6 +25,19 @@ const NodeInfoInput = (props) => {
                         color='secondary'
                         onChange={props.changeNodeData('radius', props.position)}
                         margin="normal" label="Radius" value={props.selected.radius} />
+                    <Box sx={{marginTop: '1vh'}}>
+                        {props.connections.map((conn, index) => {
+                            return (
+                                <ConnectionCard
+                                    x={conn.x}
+                                    y={conn.y}
+                                    value={conn.val}
+                                    radius={conn.radius}
+                                    key={`${conn.x}-connection`}
+                                />
+                            )
+                        })}
+                    </Box>
                 </div>
             );
         } else {

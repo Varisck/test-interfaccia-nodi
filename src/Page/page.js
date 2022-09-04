@@ -70,6 +70,7 @@ const Page = () => {
                     <NodeInfo 
                         selected={selectedNodes}
                         changeNodeData={changeNodeData}
+                        connections={connections}
                     />
                 </div>
                 <div className="Canvas-div" ref={ref}>
